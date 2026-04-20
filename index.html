@@ -8,7 +8,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-
 <style>
 :root {
   --flamac-red: #8B1A1A;
@@ -25,11 +24,9 @@
   --shadow-md: 0 4px 12px rgba(42,39,35,0.08);
   --shadow-lg: 0 12px 32px rgba(42,39,35,0.12);
 }
-
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { font-family: 'Inter', -apple-system, sans-serif; color: var(--charcoal); background: var(--cream); line-height: 1.5; -webkit-font-smoothing: antialiased; }
 .mono { font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; }
-
 /* LAYOUT */
 .app { display: flex; min-height: 100vh; }
 .sidebar {
@@ -37,7 +34,6 @@ html, body { font-family: 'Inter', -apple-system, sans-serif; color: var(--charc
   padding: 20px; overflow-y: auto; position: sticky; top: 0; height: 100vh;
 }
 .main { flex: 1; min-width: 0; }
-
 /* SIDEBAR */
 .sb-logo {
   display: flex; align-items: center; gap: 12px; padding-bottom: 16px;
@@ -51,7 +47,6 @@ html, body { font-family: 'Inter', -apple-system, sans-serif; color: var(--charc
 .sb-logo .txt { font-size: 11px; line-height: 1.3; }
 .sb-logo .txt strong { display: block; font-size: 13px; letter-spacing: 0.5px; }
 .sb-logo .txt span { color: var(--firenze-terracotta); letter-spacing: 1px; font-size: 9px; }
-
 .sb-section { margin-bottom: 20px; }
 .sb-label {
   font-size: 10px; letter-spacing: 1.5px; color: var(--firenze-terracotta);
@@ -64,7 +59,6 @@ html, body { font-family: 'Inter', -apple-system, sans-serif; color: var(--charc
   background: rgba(255,255,255,0.05); color: var(--cream); font-size: 13px; font-family: inherit;
 }
 .sb-filter input:focus, .sb-filter select:focus { outline: 1px solid var(--firenze-terracotta); }
-
 .multi-chips {
   background: rgba(255,255,255,0.05); border: 1px solid rgba(232,227,216,0.15);
   border-radius: 6px; padding: 6px; min-height: 32px; display: flex; flex-wrap: wrap; gap: 4px;
@@ -76,7 +70,6 @@ html, body { font-family: 'Inter', -apple-system, sans-serif; color: var(--charc
 .chip .x { opacity: 0.7; font-weight: bold; }
 .chip:hover { background: var(--flamac-red-dark); }
 .chip-add { font-size: 11px; color: var(--muted); padding: 4px 8px; }
-
 .sb-filter details { background: rgba(255,255,255,0.05); border-radius: 6px; border: 1px solid rgba(232,227,216,0.15); }
 .sb-filter details summary {
   padding: 8px 10px; font-size: 12px; cursor: pointer; color: var(--cream);
@@ -88,7 +81,6 @@ html, body { font-family: 'Inter', -apple-system, sans-serif; color: var(--charc
 .sb-filter .opt-list { max-height: 200px; overflow-y: auto; padding: 4px 10px 10px; }
 .sb-filter .opt-list label { display: flex; align-items: center; gap: 6px; font-size: 12px; padding: 3px 0; cursor: pointer; color: var(--cream); }
 .sb-filter .opt-list input[type=checkbox] { width: auto; }
-
 .sb-btn {
   width: 100%; padding: 10px; background: var(--flamac-red); color: var(--cream);
   border: none; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer;
@@ -97,7 +89,6 @@ html, body { font-family: 'Inter', -apple-system, sans-serif; color: var(--charc
 .sb-btn:hover { background: var(--flamac-red-dark); }
 .sb-btn.secondary { background: transparent; border: 1px solid rgba(232,227,216,0.2); color: var(--warm-gray); }
 .sb-btn.secondary:hover { background: rgba(255,255,255,0.05); }
-
 .sb-meta {
   font-size: 10px; color: var(--muted); border-top: 1px solid rgba(232,227,216,0.15);
   padding-top: 12px; margin-top: 12px;
@@ -109,7 +100,6 @@ html, body { font-family: 'Inter', -apple-system, sans-serif; color: var(--charc
   70% { box-shadow: 0 0 0 6px rgba(79,123,78,0); }
   100% { box-shadow: 0 0 0 0 rgba(79,123,78,0); }
 }
-
 /* MAIN */
 .topbar {
   background: var(--white); border-bottom: 1px solid var(--warm-gray);
@@ -127,7 +117,6 @@ html, body { font-family: 'Inter', -apple-system, sans-serif; color: var(--charc
 .top-btn:hover { background: var(--warm-gray); }
 .top-btn.primary { background: var(--flamac-red); border-color: var(--flamac-red); color: var(--cream); }
 .top-btn.primary:hover { background: var(--flamac-red-dark); }
-
 /* KPIS */
 .kpi-row {
   display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px;
@@ -144,7 +133,6 @@ html, body { font-family: 'Inter', -apple-system, sans-serif; color: var(--charc
 .kpi-card .lbl { font-size: 9px; letter-spacing: 1.5px; color: var(--muted); font-weight: 600; text-transform: uppercase; }
 .kpi-card .val { font-size: 22px; font-weight: 700; margin-top: 4px; color: var(--charcoal); letter-spacing: -0.3px; }
 .kpi-card .sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
-
 /* TABS */
 .tabs {
   padding: 0 32px; display: flex; gap: 2px; border-bottom: 1px solid var(--warm-gray);
@@ -157,14 +145,12 @@ html, body { font-family: 'Inter', -apple-system, sans-serif; color: var(--charc
 }
 .tab:hover { color: var(--charcoal); }
 .tab.active { color: var(--flamac-red); border-bottom-color: var(--flamac-red); font-weight: 600; }
-
 /* SECTIONS */
 .section { padding: 20px 32px; display: none; }
 .section.active { display: block; }
 .sec-head { margin-bottom: 16px; display: flex; justify-content: space-between; align-items: baseline; }
 .sec-head h2 { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; color: var(--charcoal); }
 .sec-head .count { font-size: 12px; color: var(--muted); }
-
 .card {
   background: var(--white); border-radius: 8px; padding: 18px 20px;
   box-shadow: var(--shadow-sm); border: 1px solid var(--warm-gray);
@@ -180,13 +166,10 @@ html, body { font-family: 'Inter', -apple-system, sans-serif; color: var(--charc
   text-transform: uppercase; letter-spacing: 0.5px;
 }
 .card-tools button:hover { background: var(--warm-gray); }
-
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-
 .chart-container { position: relative; height: 260px; }
 .chart-container.large { height: 340px; }
-
 /* TABLES */
 .tbl-wrapper { max-height: 420px; overflow-y: auto; border: 1px solid var(--warm-gray); border-radius: 6px; }
 table { width: 100%; border-collapse: collapse; font-size: 12px; }
@@ -202,17 +185,14 @@ th.sorted-desc::after { content: ' ↓'; color: var(--flamac-red); }
 td { padding: 7px 8px; border-bottom: 1px solid var(--warm-gray); color: var(--charcoal); vertical-align: top; }
 td.num { text-align: right; font-family: 'IBM Plex Mono', monospace; font-weight: 500; white-space: nowrap; }
 tr:hover td { background: var(--cream); }
-
 .badge { display: inline-block; padding: 1px 6px; border-radius: 999px; font-size: 10px; font-weight: 500; }
 .badge-ok { background: rgba(79,123,78,0.12); color: var(--firenze-sage); }
 .badge-warn { background: rgba(201,114,43,0.12); color: var(--firenze-terracotta); }
 .badge-crit { background: rgba(139,26,26,0.12); color: var(--flamac-red); }
 .badge-neu { background: var(--warm-gray); color: var(--charcoal); }
-
 /* EMPTY/LOADING */
 .state { padding: 40px; text-align: center; color: var(--muted); font-size: 13px; }
 .state.error { color: var(--flamac-red); }
-
 /* FILTER BAR */
 .active-filters {
   padding: 10px 32px; background: rgba(201,114,43,0.06); border-bottom: 1px solid var(--warm-gray);
@@ -228,7 +208,6 @@ tr:hover td { background: var(--cream); }
 .active-filters .clear-all {
   color: var(--flamac-red); cursor: pointer; margin-left: auto; font-weight: 600;
 }
-
 /* MOBILE */
 @media (max-width: 900px) {
   .app { flex-direction: column; }
@@ -238,7 +217,6 @@ tr:hover td { background: var(--cream); }
 </style>
 </head>
 <body>
-
 <div class="app">
   <!-- ============================ SIDEBAR ============================ -->
   <aside class="sidebar">
@@ -249,7 +227,6 @@ tr:hover td { background: var(--cream); }
         <span>PORTO FIRENZE</span>
       </div>
     </div>
-
     <div class="sb-section">
       <div class="sb-label">Período</div>
       <div class="sb-filter">
@@ -273,7 +250,6 @@ tr:hover td { background: var(--cream); }
         </select>
       </div>
     </div>
-
     <div class="sb-section">
       <div class="sb-label">Fornecedor</div>
       <div class="sb-filter">
@@ -283,7 +259,6 @@ tr:hover td { background: var(--cream); }
         </details>
       </div>
     </div>
-
     <div class="sb-section">
       <div class="sb-label">Colaborador / Função</div>
       <div class="sb-filter">
@@ -299,7 +274,6 @@ tr:hover td { background: var(--cream); }
         </details>
       </div>
     </div>
-
     <div class="sb-section">
       <div class="sb-label">Financeiro</div>
       <div class="sb-filter">
@@ -315,18 +289,15 @@ tr:hover td { background: var(--cream); }
         </details>
       </div>
     </div>
-
     <div class="sb-section">
       <button class="sb-btn" id="btn-apply">Aplicar filtros</button>
       <button class="sb-btn secondary" id="btn-reset">Limpar tudo</button>
     </div>
-
     <div class="sb-meta">
       <div class="live"><span class="pulse"></span><span id="meta-updated">—</span></div>
       <div id="meta-counts" style="margin-top:4px;"></div>
     </div>
   </aside>
-
   <!-- ============================ MAIN ============================ -->
   <div class="main">
     <div class="topbar">
@@ -336,12 +307,9 @@ tr:hover td { background: var(--cream); }
         <button class="top-btn primary" id="btn-export-all">⬇ Export CSV</button>
       </div>
     </div>
-
     <div class="active-filters" id="active-filters"></div>
-
     <!-- KPIS -->
     <div class="kpi-row" id="kpi-row"></div>
-
     <nav class="tabs" role="tablist">
       <button class="tab active" data-target="overview">Visão geral</button>
       <button class="tab" data-target="locacoes">Locações</button>
@@ -352,7 +320,6 @@ tr:hover td { background: var(--cream); }
       <button class="tab" data-target="estoque">Estoque</button>
       <button class="tab" data-target="custos">Custos</button>
     </nav>
-
     <section class="section active" id="overview">
       <div class="sec-head"><h2>Visão geral</h2></div>
       <div class="grid-2">
@@ -376,7 +343,6 @@ tr:hover td { background: var(--cream); }
         <div class="chart-container large"><canvas id="chart-prod-colab"></canvas></div>
       </div>
     </section>
-
     <section class="section" id="locacoes">
       <div class="sec-head">
         <h2>Locações <span class="count" id="loc-count"></span></h2>
@@ -397,7 +363,6 @@ tr:hover td { background: var(--cream); }
         <div class="tbl-wrapper"><table id="tbl-locacoes"></table></div>
       </div>
     </section>
-
     <section class="section" id="entregas">
       <div class="sec-head">
         <h2>Entregas <span class="count" id="ent-count"></span></h2>
@@ -418,7 +383,6 @@ tr:hover td { background: var(--cream); }
         <div class="tbl-wrapper"><table id="tbl-entregas"></table></div>
       </div>
     </section>
-
     <section class="section" id="transporte">
       <div class="sec-head">
         <h2>Transporte <span class="count" id="tra-count"></span></h2>
@@ -439,7 +403,6 @@ tr:hover td { background: var(--cream); }
         <div class="tbl-wrapper"><table id="tbl-transporte"></table></div>
       </div>
     </section>
-
     <section class="section" id="producao">
       <div class="sec-head">
         <h2>Produção <span class="count" id="prod-count"></span></h2>
@@ -460,7 +423,6 @@ tr:hover td { background: var(--cream); }
         <div class="tbl-wrapper"><table id="tbl-producao"></table></div>
       </div>
     </section>
-
     <section class="section" id="epi">
       <div class="sec-head">
         <h2>EPI — Movimentações <span class="count" id="epi-count"></span></h2>
@@ -485,7 +447,6 @@ tr:hover td { background: var(--cream); }
         <div class="tbl-wrapper"><table id="tbl-epi-mov"></table></div>
       </div>
     </section>
-
     <section class="section" id="estoque">
       <div class="sec-head">
         <h2>Estoque (materiais) <span class="count" id="est-count"></span></h2>
@@ -500,7 +461,6 @@ tr:hover td { background: var(--cream); }
         <div class="tbl-wrapper"><table id="tbl-est-saldo"></table></div>
       </div>
     </section>
-
     <section class="section" id="custos">
       <div class="sec-head">
         <h2>Custos <span class="count" id="cust-count"></span></h2>
@@ -523,16 +483,13 @@ tr:hover td { background: var(--cream); }
     </section>
   </div>
 </div>
-
 <div class="state" id="loading">Carregando...</div>
 <div class="state error" id="error" style="display:none;"></div>
-
 <script>
 // ==========================================================================
 // ENDPOINT
 // ==========================================================================
 const ENDPOINT_URL = 'https://script.google.com/macros/s/AKfycby0Zqia2mEGNIoxtdf1S9Lc96FhxkFzAkr5ItqpKl7pah06fUEIwfaPXgOUR-kq2lB-/exec';
-
 // ==========================================================================
 // STATE
 // ==========================================================================
@@ -549,7 +506,6 @@ const state = {
   filtered: {}
 };
 const charts = {};
-
 // ==========================================================================
 // UTILS
 // ==========================================================================
@@ -561,7 +517,6 @@ const PAL = { red:'#8B1A1A', redDark:'#5E1111', terra:'#C9722B', sage:'#4F7B4E',
 Chart.defaults.font.family = "'Inter', sans-serif";
 Chart.defaults.color = PAL.muted;
 Chart.defaults.borderColor = PAL.grid;
-
 function toCsv(rows, cols) {
   if (!rows || rows.length === 0) return cols.join(',') + '\n';
   const lines = [cols.join(',')];
@@ -581,7 +536,6 @@ function downloadCsv(filename, csv) {
   a.href = url; a.download = filename; a.click();
   URL.revokeObjectURL(url);
 }
-
 // ==========================================================================
 // FETCH
 // ==========================================================================
@@ -603,7 +557,6 @@ async function load() {
     e.style.display = 'block';
   }
 }
-
 // ==========================================================================
 // INIT FILTERS (populate sidebar based on raw data dimensions)
 // ==========================================================================
@@ -611,45 +564,36 @@ function initFilters(data) {
   // Date preset default
   const preset = document.getElementById('f-date-preset').value;
   applyDatePreset(preset);
-
   // Fornecedores — from dimensions + observed in facts
   const forn = new Set();
   (data.dimensions?.fornecedores || []).forEach(f => forn.add(f.nome_fantasia || f.razao_social));
   populateOptList('f-forn-list', 'f-forn-summary', 'fornecedores', [...forn].sort());
-
   // Colaboradores
   const colabs = new Set();
   (data.dimensions?.colaboradores || []).forEach(c => colabs.add(c.nome_completo || c.nome_normalizado));
   populateOptList('f-colab-list', 'f-colab-summary', 'colaboradores', [...colabs].sort());
-
   // Funções
   const funcs = new Set();
   (data.dimensions?.funcoes || []).forEach(f => funcs.add(f.descricao));
   populateOptList('f-funcao-list', 'f-funcao-summary', 'funcoes', [...funcs].sort());
-
   // Centros de custo — da lista de custos observados
   const ccs = new Set();
   (data.raw?.fCusto || []).forEach(c => ccs.add(c.centro_custo));
   populateOptList('f-cc-list', 'f-cc-summary', 'centros_custo', [...ccs].sort().filter(Boolean));
-
   // Status custo
   const statuses = ['PREVISTO','APROVADO','EMPENHADO','PAGO','CANCELADO'];
   populateOptList('f-status-list', 'f-status-summary', 'status_custo', statuses);
-
   // Bind date inputs
   document.getElementById('f-date-preset').addEventListener('change', e => applyDatePreset(e.target.value));
   document.getElementById('f-date-from').addEventListener('change', e => { state.filters.dateFrom = e.target.value; });
   document.getElementById('f-date-to').addEventListener('change', e => { state.filters.dateTo = e.target.value; });
-
   document.getElementById('btn-apply').addEventListener('click', applyFilters);
   document.getElementById('btn-reset').addEventListener('click', resetFilters);
   document.getElementById('btn-refresh').addEventListener('click', load);
   document.getElementById('btn-export-all').addEventListener('click', exportAll);
-
   document.querySelectorAll('[data-export]').forEach(btn => {
     btn.addEventListener('click', () => exportSection(btn.dataset.export));
   });
-
   document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
     document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
     document.querySelectorAll('.section').forEach(x => x.classList.remove('active'));
@@ -657,7 +601,6 @@ function initFilters(data) {
     document.getElementById(t.dataset.target).classList.add('active');
   }));
 }
-
 function populateOptList(listId, summaryId, filterKey, items) {
   const list = document.getElementById(listId);
   list.innerHTML = items.map(it => `<label><input type="checkbox" value="${it.replace(/"/g,'&quot;')}" data-fk="${filterKey}"> ${it}</label>`).join('');
@@ -669,7 +612,6 @@ function populateOptList(listId, summaryId, filterKey, items) {
     });
   });
 }
-
 function updateFilterSummary(summaryId, filterKey) {
   const s = state.filters[filterKey];
   const sum = document.getElementById(summaryId);
@@ -677,7 +619,6 @@ function updateFilterSummary(summaryId, filterKey) {
   else if (s.size <= 2) sum.textContent = [...s].join(', ');
   else sum.textContent = `${s.size} selecionados`;
 }
-
 function applyDatePreset(preset) {
   const today = new Date();
   const fmt = d => d.toISOString().split('T')[0];
@@ -694,7 +635,6 @@ function applyDatePreset(preset) {
   document.getElementById('f-date-from').value = from || '';
   document.getElementById('f-date-to').value = to || '';
 }
-
 function resetFilters() {
   state.filters = { dateFrom: null, dateTo: null, fornecedores: new Set(), colaboradores: new Set(), funcoes: new Set(), centros_custo: new Set(), status_custo: new Set() };
   document.getElementById('f-date-preset').value = 'all';
@@ -703,14 +643,12 @@ function resetFilters() {
   ['f-forn-summary','f-colab-summary','f-funcao-summary','f-cc-summary','f-status-summary'].forEach(id => document.getElementById(id).textContent = 'Todos');
   applyFilters();
 }
-
 // ==========================================================================
 // APPLY FILTERS
 // ==========================================================================
 function applyFilters() {
   const d = state.raw;
   if (!d) return;
-
   const dateFrom = state.filters.dateFrom;
   const dateTo = state.filters.dateTo;
   const forn = state.filters.fornecedores;
@@ -718,7 +656,6 @@ function applyFilters() {
   const funcoes = state.filters.funcoes;
   const ccs = state.filters.centros_custo;
   const statuses = state.filters.status_custo;
-
   const inDate = (iso) => {
     if (!iso) return true;
     if (dateFrom && iso < dateFrom) return false;
@@ -726,7 +663,6 @@ function applyFilters() {
     return true;
   };
   const inSet = (set, v) => set.size === 0 || set.has(v);
-
   state.filtered.locacoes = (d.raw?.fLocacao || []).filter(r =>
     inDate(r.data_retirada) && inSet(forn, fornecedorNomeById(r.fornecedor_id)));
   state.filtered.entregas = (d.raw?.fEntrega || []).filter(r =>
@@ -741,7 +677,6 @@ function applyFilters() {
     inDate(r.data) && inSet(colab, colabNomeById(r.colab_id)) && inSet(forn, fornecedorNomeById(r.fornecedor_id)));
   state.filtered.custos = (d.raw?.fCusto || []).filter(r =>
     inDate(r.data_competencia) && inSet(forn, fornecedorNomeById(r.fornecedor_id)) && inSet(ccs, r.centro_custo) && inSet(statuses, r.status));
-
   renderActiveFilters();
   renderMeta();
   renderKpis();
@@ -754,7 +689,6 @@ function applyFilters() {
   renderEstoque();
   renderCustos();
 }
-
 function fornecedorNomeById(id) {
   if (!id) return '';
   const f = (state.raw?.dimensions?.fornecedores || []).find(x => x.fornecedor_id === id);
@@ -769,7 +703,6 @@ function funcaoDescById(id) {
   const f = (state.raw?.dimensions?.funcoes || []).find(x => x.funcao_id === id);
   return f ? f.descricao : id;
 }
-
 // ==========================================================================
 // RENDER — active filter chips
 // ==========================================================================
@@ -782,7 +715,6 @@ function renderActiveFilters() {
   state.filters.funcoes.forEach(v => chips.push({ k: 'funcoes', v, label: `Função: ${v}` }));
   state.filters.centros_custo.forEach(v => chips.push({ k: 'centros_custo', v, label: `CC: ${v}` }));
   state.filters.status_custo.forEach(v => chips.push({ k: 'status_custo', v, label: `Status: ${v}` }));
-
   if (chips.length === 0) { el.classList.remove('has-filters'); el.innerHTML = ''; return; }
   el.classList.add('has-filters');
   el.innerHTML = '<span class="lbl">Filtros ativos:</span>' +
@@ -795,7 +727,6 @@ function renderActiveFilters() {
     applyFilters();
   }));
 }
-
 function renderMeta() {
   const d = state.raw;
   if (!d) return;
@@ -803,7 +734,6 @@ function renderMeta() {
   const f = state.filtered;
   document.getElementById('meta-counts').innerHTML = `Loc ${f.locacoes.length} · Ent ${f.entregas.length} · Tra ${f.transporte.length} · Prod ${f.producao.length} · EPI ${f.epi_mov.length} · Est ${f.estoque_mov.length} · Cst ${f.custos.length}`;
 }
-
 // ==========================================================================
 // KPIs globais (sensíveis a filtros)
 // ==========================================================================
@@ -814,7 +744,6 @@ function renderKpis() {
   const custoPrevisto = f.custos.reduce((s,r) => s + (parseFloat(r.valor_previsto) || 0), 0);
   const producaoTotal = f.producao.reduce((s,r) => s + (parseFloat(r.valor_total) || 0), 0);
   const colabsAtivos = new Set(f.producao.filter(r => (parseFloat(r.valor_total) || 0) > 0).map(r => r.colab_id)).size;
-
   // EPI saldo atual
   const epiSaldo = {};
   f.epi_mov.forEach(r => {
@@ -825,7 +754,6 @@ function renderKpis() {
     else if (r.tipo_mov === 'SAIDA' || r.tipo_mov === 'BAIXA') epiSaldo[k] -= q;
   });
   const epiNeg = Object.values(epiSaldo).filter(v => v < 0).length;
-
   document.getElementById('kpi-row').innerHTML = `
     <div class="kpi-card"><div class="lbl">Custo previsto</div><div class="val">${fmtMoneyShort(custoPrevisto)}</div><div class="sub">${f.custos.length} lançamentos</div></div>
     <div class="kpi-card alt-1"><div class="lbl">Locações ativas</div><div class="val">${fmtMoneyShort(locValor)}</div><div class="sub">${locAtivas.length} itens em obra</div></div>
@@ -835,13 +763,11 @@ function renderKpis() {
     <div class="kpi-card alt-1"><div class="lbl">Transporte</div><div class="val">${f.transporte.length}</div><div class="sub">no período</div></div>
   `;
 }
-
 // ==========================================================================
 // RENDER SECTIONS
 // ==========================================================================
 function groupBy(arr, keyFn) { const out = {}; arr.forEach(r => { const k = keyFn(r); if (!k) return; out[k] = (out[k] || 0) + 1; }); return out; }
 function sumBy(arr, keyFn, valFn) { const out = {}; arr.forEach(r => { const k = keyFn(r); if (!k) return; out[k] = (out[k] || 0) + (valFn(r) || 0); }); return out; }
-
 function renderOverview() {
   const f = state.filtered;
   // Entregas por dia
@@ -865,7 +791,6 @@ function renderOverview() {
     onClick: (_, elements) => { if (elements.length) { const v = cbs[elements[0].index][0]; state.filters.colaboradores = new Set([v]); applyFilters(); } }
   });
 }
-
 function renderLocacoes() {
   const f = state.filtered.locacoes;
   document.getElementById('loc-count').textContent = `(${f.length} itens)`;
@@ -876,7 +801,6 @@ function renderLocacoes() {
   // Top itens
   const items = ativas.sort((a,b) => (parseFloat(b.valor_total)||0) - (parseFloat(a.valor_total)||0)).slice(0, 12);
   renderChart('chart-loc-items', 'bar', { labels: items.map(r => r.descricao_item), datasets: [{ data: items.map(r => parseFloat(r.valor_total)||0), backgroundColor: PAL.red, borderRadius: 3 }] }, { indexAxis: 'y', scales: { x: { ticks: { callback: v => fmtMoneyShort(v) } } } });
-
   renderTable('tbl-locacoes', f, [
     { k: 'data_retirada', l: 'Data', f: fmtDate },
     { k: 'fornecedor_id', l: 'Fornecedor', f: v => fornecedorNomeById(v) },
@@ -887,7 +811,6 @@ function renderLocacoes() {
     { k: 'em_obra', l: 'Status', f: v => (v === true || v === 'TRUE') ? '<span class="badge badge-warn">EM OBRA</span>' : '<span class="badge badge-ok">DEVOLVIDO</span>', html: true }
   ]);
 }
-
 function renderEntregas() {
   const f = state.filtered.entregas;
   document.getElementById('ent-count').textContent = `(${f.length} entregas)`;
@@ -902,7 +825,6 @@ function renderEntregas() {
   const byDow = [0,0,0,0,0,0,0];
   f.forEach(r => { if (r.data) byDow[new Date(r.data+'T00:00').getDay()]++; });
   renderChart('chart-ent-dia-sem', 'bar', { labels: dowMap, datasets: [{ data: byDow, backgroundColor: PAL.terra, borderRadius: 3 }] });
-
   renderTable('tbl-entregas', f, [
     { k: 'data', l: 'Data', f: fmtDate },
     { k: 'hora_chegada', l: 'Hora' },
@@ -914,7 +836,6 @@ function renderEntregas() {
     { k: 'status', l: 'Status' }
   ]);
 }
-
 function renderTransporte() {
   const f = state.filtered.transporte;
   document.getElementById('tra-count').textContent = `(${f.length} movimentos)`;
@@ -924,7 +845,6 @@ function renderTransporte() {
   const byEmp = groupBy(f, r => r.empresa_transportadora);
   const eks = Object.entries(byEmp).sort((a,b) => b[1]-a[1]);
   renderChart('chart-tra-emp', 'bar', { labels: eks.map(x => x[0]), datasets: [{ data: eks.map(x => x[1]), backgroundColor: PAL.sage, borderRadius: 3 }] }, { indexAxis: 'y' });
-
   renderTable('tbl-transporte', f, [
     { k: 'data', l: 'Data', f: fmtDate },
     { k: 'hora_saida', l: 'Hora' },
@@ -936,7 +856,6 @@ function renderTransporte() {
     { k: 'quantidade', l: 'Qtd', n: true }
   ]);
 }
-
 function renderProducao() {
   const f = state.filtered.producao;
   document.getElementById('prod-count').textContent = `(${f.length} lançamentos)`;
@@ -947,7 +866,6 @@ function renderProducao() {
   const byFn = sumBy(f, r => r.funcao_desc, r => parseFloat(r.valor_total) || 0);
   const fks = Object.entries(byFn).sort((a,b) => b[1]-a[1]);
   renderChart('chart-prod-funcao', 'bar', { labels: fks.map(x => x[0]), datasets: [{ data: fks.map(x => x[1]), backgroundColor: PAL.sage, borderRadius: 3 }] }, { indexAxis: 'y', scales: { x: { ticks: { callback: v => fmtMoneyShort(v) } } } });
-
   renderTable('tbl-producao', f, [
     { k: 'mes_referencia', l: 'Mês' },
     { k: 'colab_id', l: 'Colaborador', f: v => colabNomeById(v) },
@@ -956,7 +874,6 @@ function renderProducao() {
     { k: 'valor_total', l: 'Valor', n: true, f: v => fmtMoney(v) }
   ]);
 }
-
 function renderEpi() {
   const f = state.filtered.epi_mov;
   document.getElementById('epi-count').textContent = `(${f.length} movimentações)`;
@@ -974,17 +891,14 @@ function renderEpi() {
   // agrupar por categoria (se extraíra de id)
   const byCat = {};
   epiList.forEach(r => { const cat = r.id.split('-')[0] || 'OUTROS'; byCat[cat] = (byCat[cat] || 0) + r.qtd; });
-
   renderChart('chart-epi-cat', 'bar', { labels: Object.keys(byCat), datasets: [{ data: Object.values(byCat), backgroundColor: PAL.sage, borderRadius: 3 }] });
   // negativos
   const neg = epiList.filter(r => r.qtd < 0).sort((a,b) => a.qtd - b.qtd).slice(0, 15);
   renderChart('chart-epi-neg', 'bar', { labels: neg.map(x => x.desc), datasets: [{ data: neg.map(x => x.qtd), backgroundColor: PAL.red, borderRadius: 3 }] }, { indexAxis: 'y' });
-
   renderTable('tbl-epi-saldo', epiList.sort((a,b) => a.qtd - b.qtd), [
     { k: 'id', l: 'EPI' },
     { k: 'qtd', l: 'Saldo atual', n: true, f: v => `<span style="color:${v<0?'var(--flamac-red)':v<5?'var(--firenze-terracotta)':'var(--firenze-sage)'};font-weight:600;">${v}</span>`, html: true }
   ]);
-
   renderTable('tbl-epi-mov', f.slice(-30).reverse(), [
     { k: 'data', l: 'Data', f: fmtDate },
     { k: 'tipo_mov', l: 'Tipo', f: v => `<span class="badge ${v==='ENTRADA'?'badge-ok':v==='SAIDA'?'badge-warn':'badge-neu'}">${v}</span>`, html: true },
@@ -994,7 +908,6 @@ function renderEpi() {
     { k: 'motivo', l: 'Motivo' }
   ]);
 }
-
 function renderEstoque() {
   const f = state.filtered.estoque_mov;
   document.getElementById('est-count').textContent = `(${f.length} movimentações)`;
@@ -1007,17 +920,14 @@ function renderEstoque() {
     else if (r.tipo_mov === 'SAIDA' || r.tipo_mov === 'BAIXA' || r.tipo_mov === 'PERDA') saldo[k] -= q;
   });
   const list = Object.entries(saldo).map(([id, qtd]) => ({ id, qtd }));
-
   const byCat = {};
   list.forEach(r => { const cat = r.id.split('-')[0] || 'OUTROS'; byCat[cat] = (byCat[cat] || 0) + r.qtd; });
   renderChart('chart-est-cat', 'bar', { labels: Object.keys(byCat), datasets: [{ data: Object.values(byCat), backgroundColor: PAL.terra, borderRadius: 3 }] });
-
   renderTable('tbl-est-saldo', list.sort((a,b) => a.qtd - b.qtd), [
     { k: 'id', l: 'Item' },
     { k: 'qtd', l: 'Saldo', n: true, f: v => `<span style="color:${v<0?'var(--flamac-red)':v<5?'var(--firenze-terracotta)':'var(--firenze-sage)'};font-weight:600;">${v}</span>`, html: true }
   ]);
 }
-
 function renderCustos() {
   const f = state.filtered.custos;
   document.getElementById('cust-count').textContent = `(${f.length} lançamentos)`;
@@ -1027,7 +937,6 @@ function renderCustos() {
   const bySt = sumBy(f, r => r.status, r => parseFloat(r.valor_previsto) || 0);
   const sts = Object.entries(bySt).sort((a,b) => b[1]-a[1]);
   renderChart('chart-custos-status', 'doughnut', { labels: sts.map(x => x[0]), datasets: [{ data: sts.map(x => x[1]), backgroundColor: [PAL.red, PAL.terra, PAL.sage, PAL.charcoal, PAL.muted] }] }, { plugins: { legend: { display: true, position: 'bottom', labels: { font: { size: 10 } } } } });
-
   renderTable('tbl-custos', f, [
     { k: 'mes_referencia', l: 'Mês' },
     { k: 'centro_custo', l: 'Centro' },
@@ -1038,7 +947,6 @@ function renderCustos() {
     { k: 'status', l: 'Status', f: v => `<span class="badge ${v==='PAGO'?'badge-ok':v==='CANCELADO'?'badge-neu':'badge-warn'}">${v || '—'}</span>`, html: true }
   ]);
 }
-
 // ==========================================================================
 // TABLES with sort
 // ==========================================================================
@@ -1055,7 +963,6 @@ function renderTable(id, rows, cols) {
   // sort
   tbl.querySelectorAll('th').forEach(th => th.addEventListener('click', () => sortTable(tbl, th, rows, cols)));
 }
-
 let sortState = {};
 function sortTable(tbl, th, rows, cols) {
   const col = th.dataset.col;
@@ -1075,9 +982,7 @@ function sortTable(tbl, th, rows, cols) {
   renderTable(id, sorted, cols);
   sortState[id].asc = !sortState[id].asc; // next click flips
 }
-
 function escapeHtml(s) { return s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
-
 // ==========================================================================
 // CHART
 // ==========================================================================
@@ -1092,7 +997,6 @@ function renderChart(id, type, data, extra = {}) {
   if (type === 'doughnut') delete opts.scales;
   charts[id] = new Chart(document.getElementById(id), { type, data, options: opts });
 }
-
 // ==========================================================================
 // EXPORT
 // ==========================================================================
@@ -1111,11 +1015,9 @@ function exportSection(section) {
   if (!m) return;
   downloadCsv(`flamac_${m.name}_${new Date().toISOString().split('T')[0]}.csv`, toCsv(m.rows, m.cols));
 }
-
 function exportAll() {
   ['locacoes','entregas','transporte','producao','epi','estoque','custos'].forEach(s => exportSection(s));
 }
-
 // ==========================================================================
 // INIT
 // ==========================================================================
