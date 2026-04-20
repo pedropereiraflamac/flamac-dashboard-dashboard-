@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FLAMAC · Porto Firenze — Painel Central da Obra</title>
+<meta name="description" content="Dashboard central de controle da obra Porto Firenze — Suprimentos, Efetivo, Ferramentas, Custos e Entregas">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+<style>
+:root {
+  --flamac-red: #8B1A1A;
+  --flamac-red-dark: #5E1111;
+  --firenze-terracotta: #C9722B;
+  --firenze-sage: #4F7B4E;
+  --cream: #FAF7F0;
+  --warm-gray: #E8E3D8;
+  --charcoal: #2A2723;
+  --muted: #6B6560;
+  --white: #FFFFFF;
+  --shadow-sm: 0 1px 2px rgba(42,39,35,0.06);
+  --shadow-md: 0 4px 12px rgba(42,39,35,0.08);
+  --shadow-lg: 0 12px 32px rgba(42,39,35,0.12);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { font-family: 'Inter', -apple-system, sans-serif; color: var(--charcoal); background: var(--cream); line-height: 1.5; -webkit-font-smoothing: antialiased; }
+.mono { font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; }
+
+/* HEADER */
+.header {
+  background: var(--charcoal); color: var(--cream);
+  padding: 18px 40px; display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow-md);
+}
+.header-brand { display: flex; align-items: center; gap: 16px; }
+.logo-mark {
+  width: 44px; height: 44px; border-radius: 8px; background: var(--flamac-red);
+  color: var(--cream); display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 22px; letter-spacing: -1px;
+}
+.brand-text .eyebrow { font-size: 10px; letter-spacing: 2px; color: var(--firenze-terracotta); font-weight: 600; }
+.brand-text .title { font-size: 17px; font-weight: 600; margin-top: 2px; }
+.header-meta { font-size: 11px; color: var(--warm-gray); text-align: right; }
+.header-meta .live { display: inline-flex; align-items: center; gap: 6px; }
+.pulse {
+  width: 8px; height: 8px; border-radius: 50%; background: var(--firenze-sage);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(79,123,78,0.5); }
+  70% { box-shadow: 0 0 0 8px rgba(79,123,78,0); }
+  100% { box-shadow: 0 0 0 0 rgba(79,123,78,0); }
+}
+
+/* HERO */
+.hero {
+  background: linear-gradient(135deg, var(--flamac-red) 0%, var(--flamac-red-dark) 100%);
+  color: var(--cream); padding: 40px 40px 64px 40px; position: relative; overflow: hidden;
+}
+.hero::after {
+  content: ""; position: absolute; bottom: -40px; right: -60px;
+  width: 340px; height: 340px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(201,114,43,0.28) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-label { font-size: 11px; letter-spacing: 3px; opacity: 0.78; font-weight: 500; }
+.hero-title { font-size: 36px; font-weight: 700; margin-top: 8px; letter-spacing: -0.8px; line-height: 1.15; max-width: 780px; }
+.hero-sub { font-size: 14px; opacity: 0.85; margin-top: 10px; max-width: 680px; }
+
+/* KPIS HERO */
+.kpi-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+  padding: 0 40px; margin-top: -40px; position: relative; z-index: 5;
+}
+.kpi-card {
+  background: var(--white); border-radius: 10px; padding: 18px 20px;
+  box-shadow: var(--shadow-md); border-top: 4px solid var(--flamac-red);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.kpi-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+.kpi-card.alt-1 { border-top-color: var(--firenze-terracotta); }
+.kpi-card.alt-2 { border-top-color: var(--firenze-sage); }
+.kpi-card.alt-3 { border-top-color: var(--charcoal); }
+.kpi-label { font-size: 10px; letter-spacing: 1.5px; color: var(--muted); font-weight: 500; }
+.kpi-value { font-size: 28px; font-weight: 700; margin-top: 6px; color: var(--charcoal); letter-spacing: -0.5px; }
+.kpi-value .unit { font-size: 13px; color: var(--muted); font-weight: 500; margin-left: 4px; }
+.kpi-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+.status-ok { color: var(--firenze-sage); font-weight: 600; }
+.status-warn { color: var(--firenze-terracotta); font-weight: 600; }
+.status-crit { color: var(--flamac-red); font-weight: 600; }
+
+/* TABS */
+.tabs { padding: 32px 40px 0 40px; display: flex; gap: 2px; border-bottom: 1px solid var(--warm-gray); overflow-x: auto; }
+.tab {
+  padding: 12px 18px; cursor: pointer; font-size: 13px; font-weight: 500;
+  color: var(--muted); border: none; background: transparent; white-space: nowrap;
+  border-bottom: 2px solid transparent; transition: all 0.15s ease; font-family: inherit;
+}
+.tab:hover { color: var(--charcoal); }
+.tab.active { color: var(--flamac-red); border-bottom-color: var(--flamac-red); font-weight: 600; }
+
+.section { padding: 24px 40px 48px 40px; display: none; }
+.section.active { display: block; }
+
+.section-head { margin-bottom: 16px; }
+.section-head h2 { font-size: 22px; font-weight: 700; color: var(--charcoal); letter-spacing: -0.3px; }
+.section-head p { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+.card { background: var(--white); border-radius: 10px; padding: 20px 24px; box-shadow: var(--shadow-sm); border: 1px solid var(--warm-gray); }
+.card + .card { margin-top: 16px; }
+.card-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 14px; gap: 16px; }
+.card-title { font-size: 15px; font-weight: 600; color: var(--charcoal); }
+.card-sub { font-size: 12px; color: var(--muted); }
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+
+.chart-container { position: relative; height: 280px; }
+
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { text-align: left; padding: 10px 8px; font-weight: 600; color: var(--muted); font-size: 10px; letter-spacing: 1px; text-transform: uppercase; border-bottom: 1px solid var(--warm-gray); }
+td { padding: 10px 8px; border-bottom: 1px solid var(--warm-gray); color: var(--charcoal); }
+td.num { text-align: right; font-family: 'IBM Plex Mono', monospace; font-weight: 500; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--cream); }
+
+.badge { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 11px; font-weight: 500; letter-spacing: 0.3px; }
+.badge-ok { background: rgba(79,123,78,0.12); color: var(--firenze-sage); }
+.badge-warn { background: rgba(201,114,43,0.12); color: var(--firenze-terracotta); }
+.badge-crit { background: rgba(139,26,26,0.12); color: var(--flamac-red); }
+
+.loading, .error { padding: 60px 40px; text-align: center; color: var(--muted); font-size: 14px; }
+.error { color: var(--flamac-red); }
+
+.footer {
+  padding: 32px 40px; background: var(--charcoal); color: var(--warm-gray);
+  font-size: 12px; text-align: center; border-top: 4px solid var(--flamac-red);
+}
+
+/* Highlight boxes */
+.alert-box {
+  background: linear-gradient(135deg, rgba(139,26,26,0.08) 0%, rgba(139,26,26,0.02) 100%);
+  border-left: 3px solid var(--flamac-red);
+  padding: 14px 18px; border-radius: 8px; margin-bottom: 14px;
+}
+.alert-box-warn {
+  background: linear-gradient(135deg, rgba(201,114,43,0.08) 0%, rgba(201,114,43,0.02) 100%);
+  border-left: 3px solid var(--firenze-terracotta);
+}
+.alert-title { font-size: 13px; font-weight: 600; color: var(--charcoal); }
+.alert-desc { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+@media (max-width: 900px) {
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  .hero-title { font-size: 26px; }
+  .header, .hero, .tabs, .section, .footer { padding-left: 20px; padding-right: 20px; }
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-brand">
+    <div class="logo-mark">F</div>
+    <div class="brand-text">
+      <div class="eyebrow">FLAMAC · CONSTRUÇÃO INDUSTRIAL</div>
+      <div class="title">Painel Central — Obra Porto Firenze</div>
+    </div>
+  </div>
+  <div class="header-meta">
+    <div class="live"><span class="pulse"></span><span id="update-time">Atualizando...</span></div>
+    <div id="row-counts" style="margin-top:3px;opacity:0.7;"></div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-label">VISÃO EXECUTIVA DA OBRA</div>
+  <h1 class="hero-title">Controle unificado de suprimentos, efetivo, entregas, ferramentas e custos — atualizado automaticamente.</h1>
+  <div class="hero-sub">Dados consolidados da planilha-mãe via Google Apps Script · atualização a cada 5 minutos · identidade visual FLAMAC × Porto Firenze</div>
+</section>
+
+<section class="kpi-grid">
+  <div class="kpi-card">
+    <div class="kpi-label">EFETIVO ATIVO · MÊS</div>
+    <div class="kpi-value"><span id="kpi-efetivo">—</span></div>
+    <div class="kpi-sub" id="kpi-efetivo-status">—</div>
+  </div>
+  <div class="kpi-card alt-1">
+    <div class="kpi-label">CUSTO PREVISTO · MÊS</div>
+    <div class="kpi-value mono" id="kpi-custo">—</div>
+    <div class="kpi-sub" id="kpi-custo-sub">—</div>
+  </div>
+  <div class="kpi-card alt-2">
+    <div class="kpi-label">LOCAÇÕES ATIVAS · R$/MÊS</div>
+    <div class="kpi-value mono" id="kpi-locacoes">—</div>
+    <div class="kpi-sub" id="kpi-locacoes-sub">—</div>
+  </div>
+  <div class="kpi-card alt-3">
+    <div class="kpi-label">ALERTAS EPI · SALDO &lt; 0</div>
+    <div class="kpi-value mono" id="kpi-epi" style="color:var(--flamac-red);">—</div>
+    <div class="kpi-sub">itens com reposição crítica</div>
+  </div>
+</section>
+
+<nav class="tabs" role="tablist">
+  <button class="tab active" data-target="overview">Visão Geral</button>
+  <button class="tab" data-target="entregas">Entregas</button>
+  <button class="tab" data-target="locacoes">Locações</button>
+  <button class="tab" data-target="producao">Produção</button>
+  <button class="tab" data-target="epi">EPI / Estoque</button>
+  <button class="tab" data-target="custos">Custos</button>
+  <button class="tab" data-target="pedidos">Pedidos</button>
+</nav>
+
+<!-- OVERVIEW -->
+<section class="section active" id="overview">
+  <div class="section-head">
+    <h2>Visão Geral — saúde da obra</h2>
+    <p>Snapshot de todos os domínios consolidados</p>
+  </div>
+  <div id="overview-alerts"></div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Entregas por dia</div>
+          <div class="card-sub">Últimos 30 dias · contagem de NFs recebidas</div>
+        </div>
+      </div>
+      <div class="chart-container"><canvas id="chart-entregas"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Produção acumulada (R$) por mês</div>
+          <div class="card-sub">Base: planilha PRODUÇÃO DOS FUNCIONÁRIOS</div>
+        </div>
+      </div>
+      <div class="chart-container"><canvas id="chart-producao"></canvas></div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px;">
+    <div class="card-header">
+      <div>
+        <div class="card-title">Custos por centro — mês referência</div>
+        <div class="card-sub">Base: Programação Financeira</div>
+      </div>
+    </div>
+    <div class="chart-container" style="height:320px;"><canvas id="chart-custos"></canvas></div>
+  </div>
+</section>
+
+<!-- ENTREGAS -->
+<section class="section" id="entregas">
+  <div class="section-head">
+    <h2>Entregas recebidas na obra</h2>
+    <p>Todo material que entrou no canteiro — com fornecedor, NF, placa e horário</p>
+  </div>
+  <div class="grid-3">
+    <div class="card"><div class="kpi-label">ENTREGAS · 30 DIAS</div><div class="kpi-value mono" id="entrega-30d">—</div></div>
+    <div class="card"><div class="kpi-label">ENTREGAS · 7 DIAS</div><div class="kpi-value mono" id="entrega-7d">—</div></div>
+    <div class="card"><div class="kpi-label">FORNECEDORES ATIVOS</div><div class="kpi-value mono" id="entrega-forn">—</div></div>
+  </div>
+  <div class="card" style="margin-top:16px;">
+    <div class="card-header">
+      <div><div class="card-title">Top 5 fornecedores (30 dias)</div><div class="card-sub">Por volume de entregas</div></div>
+    </div>
+    <table id="tbl-top-fornecedores-entrega"><thead><tr><th>#</th><th>Fornecedor</th><th style="text-align:right;">Entregas</th></tr></thead><tbody></tbody></table>
+  </div>
+  <div class="card" style="margin-top:16px;">
+    <div class="card-header">
+      <div><div class="card-title">Últimas 10 entregas</div><div class="card-sub">Em ordem reversa</div></div>
+    </div>
+    <table id="tbl-ultimas-entregas"><thead><tr><th>Data</th><th>Fornecedor</th><th>Item</th><th>NF</th><th>Placa</th></tr></thead><tbody></tbody></table>
+  </div>
+</section>
+
+<!-- LOCAÇÕES -->
+<section class="section" id="locacoes">
+  <div class="section-head">
+    <h2>Locações de equipamento em obra</h2>
+    <p>Controle de itens locados em aberto — por fornecedor</p>
+  </div>
+  <div class="grid-3">
+    <div class="card"><div class="kpi-label">VALOR TOTAL ATIVO</div><div class="kpi-value mono" id="loc-valor">—</div></div>
+    <div class="card"><div class="kpi-label">ITENS EM OBRA</div><div class="kpi-value mono" id="loc-qtd">—</div></div>
+    <div class="card"><div class="kpi-label">FORNECEDORES</div><div class="kpi-value mono" id="loc-forn">—</div></div>
+  </div>
+  <div class="card" style="margin-top:16px;">
+    <div class="card-header">
+      <div><div class="card-title">Valor ativo por fornecedor</div><div class="card-sub">Ranking decrescente</div></div>
+    </div>
+    <div class="chart-container"><canvas id="chart-loc-forn"></canvas></div>
+  </div>
+  <div class="card" style="margin-top:16px;">
+    <div class="card-header">
+      <div><div class="card-title">Top 10 itens locados</div><div class="card-sub">Por valor total</div></div>
+    </div>
+    <table id="tbl-top-itens-loc"><thead><tr><th>Fornecedor</th><th>Item</th><th style="text-align:right;">Qtd</th><th style="text-align:right;">Valor</th></tr></thead><tbody></tbody></table>
+  </div>
+</section>
+
+<!-- PRODUÇÃO -->
+<section class="section" id="producao">
+  <div class="section-head">
+    <h2>Produção dos funcionários</h2>
+    <p>Ranking da produção mensal · valor acordado por atividade</p>
+  </div>
+  <div class="grid-3">
+    <div class="card"><div class="kpi-label">PRODUÇÃO MÊS ATUAL</div><div class="kpi-value mono" id="prod-valor">—</div></div>
+    <div class="card"><div class="kpi-label">COLABORADORES ATIVOS</div><div class="kpi-value mono" id="prod-qtd">—</div></div>
+    <div class="card"><div class="kpi-label">TICKET MÉDIO</div><div class="kpi-value mono" id="prod-ticket">—</div></div>
+  </div>
+  <div class="card" style="margin-top:16px;">
+    <div class="card-header">
+      <div><div class="card-title">Top 15 colaboradores do mês</div><div class="card-sub">Por valor total de produção</div></div>
+    </div>
+    <table id="tbl-top-colabs"><thead><tr><th>#</th><th>Nome</th><th>Função</th><th style="text-align:right;">Valor</th></tr></thead><tbody></tbody></table>
+  </div>
+</section>
+
+<!-- EPI -->
+<section class="section" id="epi">
+  <div class="section-head">
+    <h2>EPI e Estoque</h2>
+    <p>Itens com saldo negativo indicam entradas não registradas — prioridade de regularização</p>
+  </div>
+  <div class="grid-3">
+    <div class="card">
+      <div class="kpi-label">SALDO NEGATIVO</div>
+      <div class="kpi-value mono" id="epi-neg" style="color:var(--flamac-red);">—</div>
+      <div class="kpi-sub">itens · regularizar urgente</div>
+    </div>
+    <div class="card">
+      <div class="kpi-label">SALDO BAIXO (< 5)</div>
+      <div class="kpi-value mono" id="epi-bx" style="color:var(--firenze-terracotta);">—</div>
+      <div class="kpi-sub">itens · solicitar compra</div>
+    </div>
+    <div class="card">
+      <div class="kpi-label">SAÍDAS NO MÊS</div>
+      <div class="kpi-value mono" id="epi-saidas">—</div>
+      <div class="kpi-sub">unidades entregues</div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px;">
+    <div class="card-header">
+      <div><div class="card-title">Itens com saldo crítico</div><div class="card-sub">Top 20 mais urgentes — priorização por saldo decrescente</div></div>
+    </div>
+    <table id="tbl-epi-alerta"><thead><tr><th>Descrição</th><th style="text-align:right;">Saldo atual</th><th style="text-align:right;">Entradas</th><th style="text-align:right;">Saídas</th><th>Status</th></tr></thead><tbody></tbody></table>
+  </div>
+</section>
+
+<!-- CUSTOS -->
+<section class="section" id="custos">
+  <div class="section-head">
+    <h2>Programação financeira</h2>
+    <p>Custos previstos por centro · base Programação Financeira</p>
+  </div>
+  <div class="grid-3">
+    <div class="card"><div class="kpi-label">TOTAL PREVISTO</div><div class="kpi-value mono" id="custo-total">—</div></div>
+    <div class="card"><div class="kpi-label">META MENSAL</div><div class="kpi-value mono" id="custo-meta">—</div></div>
+    <div class="card"><div class="kpi-label">% DA META</div><div class="kpi-value mono" id="custo-pct">—</div></div>
+  </div>
+  <div class="card" style="margin-top:16px;">
+    <div class="card-header">
+      <div><div class="card-title">Distribuição por centro de custo</div><div class="card-sub">Valores em R$</div></div>
+    </div>
+    <div class="chart-container" style="height:360px;"><canvas id="chart-custos-detail"></canvas></div>
+  </div>
+  <div class="card" style="margin-top:16px;">
+    <table id="tbl-custos"><thead><tr><th>Centro de custo</th><th style="text-align:right;">Valor</th></tr></thead><tbody></tbody></table>
+  </div>
+</section>
+
+<!-- PEDIDOS -->
+<section class="section" id="pedidos">
+  <div class="section-head">
+    <h2>Pedidos de compra</h2>
+    <p>Status atual dos pedidos abertos com fornecedores</p>
+  </div>
+  <div class="grid-3">
+    <div class="card"><div class="kpi-label">EM ANDAMENTO</div><div class="kpi-value mono" id="ped-and" style="color:var(--firenze-terracotta);">—</div></div>
+    <div class="card"><div class="kpi-label">RECEBIDOS</div><div class="kpi-value mono" id="ped-rec" style="color:var(--firenze-sage);">—</div></div>
+    <div class="card"><div class="kpi-label">TOTAL</div><div class="kpi-value mono" id="ped-total">—</div></div>
+  </div>
+  <div class="card" style="margin-top:16px;">
+    <div class="card-header">
+      <div><div class="card-title">Pedidos abertos</div><div class="card-sub">Em aguardando ou em andamento</div></div>
+    </div>
+    <table id="tbl-pedidos"><thead><tr><th>Descrição</th><th>Fornecedor</th><th>Nº pedido</th><th>Expedição</th><th>Status</th></tr></thead><tbody></tbody></table>
+  </div>
+</section>
+
+<div class="loading" id="loading">Carregando dados da planilha-mãe...</div>
+<div class="error" id="error" style="display:none;"></div>
+
+<footer class="footer">
+  FLAMAC × Porto Firenze · Dashboard alimentado via Google Apps Script · Cache 5 min · Pipeline rastreável em <code>_LOG_ERROS</code><br>
+  <span style="opacity:0.65;">Identidade visual FLAMAC (#8B1A1A) · Porto Firenze (terracota #C9722B · verde #4F7B4E)</span>
+</footer>
+
+<script>
+// ==========================================================================
+// CONFIGURAÇÃO — cole aqui a URL do seu Apps Script Web App
+// ==========================================================================
+const ENDPOINT_URL = 'https://script.google.com/macros/s/AKfycbwIGPFMnxZC-11qPFbJT-nHdAR47TwY92F6nJsVSmOC8jJWEHwWF-T93jsHYqEfMrZI/exec';
+
+// ==========================================================================
+// UTILS
+// ==========================================================================
+const fmtMoney = v => 'R$ ' + Number(v || 0).toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2});
+const fmtMoneyShort = v => {
+  const n = Number(v || 0);
+  if (n >= 1000000) return 'R$ ' + (n/1000000).toFixed(1) + 'M';
+  if (n >= 1000) return 'R$ ' + (n/1000).toFixed(0) + 'k';
+  return 'R$ ' + n.toFixed(0);
+};
+const fmtInt = v => Number(v || 0).toLocaleString('pt-BR');
+const fmtPct = v => (Number(v || 0)).toFixed(1) + '%';
+const fmtDate = iso => {
+  if (!iso) return '';
+  try { return new Date(iso + 'T00:00').toLocaleDateString('pt-BR', {day:'2-digit', month:'short'}); }
+  catch (_) { return iso; }
+};
+
+const statusBadge = (s) => {
+  const map = { OK: ['badge-ok','OK'], ATENCAO: ['badge-warn','ATENÇÃO'], CRITICO: ['badge-crit','CRÍTICO'], NEGATIVO: ['badge-crit','NEGATIVO'], BAIXO: ['badge-warn','BAIXO'] };
+  const [cls, label] = map[s] || ['badge-warn', s || '—'];
+  return `<span class="badge ${cls}">${label}</span>`;
+};
+
+// TABS
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.target).classList.add('active');
+  });
+});
+
+// CHART.JS DEFAULTS
+const PAL = {
+  red: '#8B1A1A', redDark: '#5E1111', terra: '#C9722B', sage: '#4F7B4E',
+  charcoal: '#2A2723', muted: '#6B6560', grid: '#E8E3D8'
+};
+Chart.defaults.font.family = "'Inter', sans-serif";
+Chart.defaults.color = PAL.muted;
+Chart.defaults.borderColor = PAL.grid;
+
+const chartInstances = {};
+
+function chartBase(extra = {}) {
+  return {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: { backgroundColor: PAL.charcoal, padding: 10, titleFont: { weight: 'bold' } }
+    },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { size: 10 } } },
+      y: { grid: { color: PAL.grid }, ticks: { font: { size: 10 } } }
+    },
+    ...extra
+  };
+}
+
+// ==========================================================================
+// FETCH + RENDER
+// ==========================================================================
+async function loadData() {
+  if (ENDPOINT_URL.includes('COLE_AQUI')) {
+    showError('⚙️ Configuração pendente: edite a constante ENDPOINT_URL neste arquivo e cole a URL do seu Apps Script Web App (termina em /exec).');
+    return;
+  }
+  try {
+    const resp = await fetch(ENDPOINT_URL, { cache: 'no-store' });
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    const data = await resp.json();
+    console.assert(data && data.kpis, 'Payload sem .kpis');
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('error').style.display = 'none';
+    renderAll(data);
+  } catch (err) {
+    showError('❌ Erro ao carregar dados: ' + err.message);
+  }
+}
+
+function showError(msg) {
+  document.getElementById('loading').style.display = 'none';
+  const e = document.getElementById('error');
+  e.innerHTML = msg;
+  e.style.display = 'block';
+}
+
+function renderAll(data) {
+  renderHeader(data);
+  renderHeroKpis(data.kpis);
+  renderOverview(data);
+  renderEntregas(data.kpis.entregas);
+  renderLocacoes(data.kpis.locacoes);
+  renderProducao(data.kpis.producao);
+  renderEpi(data.kpis.epi);
+  renderCustos(data.kpis.custos);
+  renderPedidos(data.kpis.pedidos);
+}
+
+function renderHeader(data) {
+  const dt = new Date(data.metadata.generated_at);
+  document.getElementById('update-time').textContent = 'atualizado ' + dt.toLocaleString('pt-BR');
+  const r = data.metadata.row_counts;
+  document.getElementById('row-counts').textContent =
+    `Loc: ${r.fLocacao} · Ent: ${r.fEntrega} · Prod: ${r.fProducao} · EPI: ${r.fEPI} · Custo: ${r.fCusto} · Ped: ${r.fPedidoCompra}` +
+    (data.metadata.total_erros_fk > 0 ? ` · ⚠️ ${data.metadata.total_erros_fk} alertas` : '');
+}
+
+function renderHeroKpis(k) {
+  const r = k.resumo_executivo;
+  document.getElementById('kpi-efetivo').innerHTML = `${r.headcount_atual}<span class="unit">/ ${r.meta_headcount}</span>`;
+  document.getElementById('kpi-efetivo-status').innerHTML = statusBadge(r.status_headcount);
+  document.getElementById('kpi-custo').textContent = fmtMoneyShort(r.custo_previsto_mes);
+  document.getElementById('kpi-custo-sub').textContent = `meta ${fmtMoneyShort(r.meta_custo_mes)}`;
+  document.getElementById('kpi-locacoes').textContent = fmtMoneyShort(r.locacoes_ativas_valor);
+  document.getElementById('kpi-locacoes-sub').textContent = `${r.locacoes_ativas_qtd} itens em obra`;
+  document.getElementById('kpi-epi').textContent = r.epi_saldo_negativo;
+}
+
+function renderOverview(data) {
+  const k = data.kpis.resumo_executivo;
+  // Alert box
+  const alerts = [];
+  if (k.epi_saldo_negativo > 0) alerts.push({ type: 'crit', title: `🚨 ${k.epi_saldo_negativo} EPIs com saldo negativo`, desc: 'Entradas no estoque não estão sendo registradas — ir na aba EPI para ação' });
+  if (k.status_headcount === 'CRITICO') alerts.push({ type: 'crit', title: `Efetivo abaixo de 85% da meta`, desc: `Ativos: ${k.headcount_atual} / Meta: ${k.meta_headcount}` });
+  if (k.pedidos_em_andamento > 10) alerts.push({ type: 'warn', title: `${k.pedidos_em_andamento} pedidos em andamento`, desc: 'Monitorar status com fornecedores' });
+  if (k.entregas_semana === 0) alerts.push({ type: 'warn', title: `Sem entregas registradas nos últimos 7 dias`, desc: 'Verificar se o controle de recebimento está sendo alimentado' });
+
+  const container = document.getElementById('overview-alerts');
+  container.innerHTML = alerts.map(a => `
+    <div class="alert-box ${a.type === 'warn' ? 'alert-box-warn' : ''}">
+      <div class="alert-title">${a.title}</div>
+      <div class="alert-desc">${a.desc}</div>
+    </div>
+  `).join('');
+
+  // Charts
+  renderChart('chart-entregas', 'bar', {
+    labels: data.series.entregas_por_dia.map(r => fmtDate(r.data)),
+    datasets: [{ data: data.series.entregas_por_dia.map(r => r.qtd), backgroundColor: PAL.red, borderRadius: 4 }]
+  });
+  renderChart('chart-producao', 'bar', {
+    labels: data.series.producao_por_mes.map(r => r.mes),
+    datasets: [{ data: data.series.producao_por_mes.map(r => r.valor), backgroundColor: PAL.sage, borderRadius: 4 }]
+  }, { scales: { y: { ticks: { callback: v => fmtMoneyShort(v) } } } });
+  renderChart('chart-custos', 'bar', {
+    labels: data.series.custo_por_centro.map(r => r.centro),
+    datasets: [{ data: data.series.custo_por_centro.map(r => r.valor), backgroundColor: PAL.terra, borderRadius: 4 }]
+  }, { indexAxis: 'y', scales: { x: { ticks: { callback: v => fmtMoneyShort(v) } } } });
+}
+
+function renderEntregas(e) {
+  document.getElementById('entrega-30d').textContent = fmtInt(e.total_30d);
+  document.getElementById('entrega-7d').textContent = fmtInt(e.total_7d);
+  document.getElementById('entrega-forn').textContent = fmtInt((e.top_5_fornecedores || []).length);
+  const tbTop = document.querySelector('#tbl-top-fornecedores-entrega tbody');
+  tbTop.innerHTML = (e.top_5_fornecedores || []).map((r, i) =>
+    `<tr><td class="mono">${i+1}</td><td>${r.fornecedor}</td><td class="num">${r.qtd_entregas}</td></tr>`
+  ).join('');
+  const tbUlt = document.querySelector('#tbl-ultimas-entregas tbody');
+  tbUlt.innerHTML = (e.ultimas_10 || []).map(r =>
+    `<tr><td>${fmtDate(r.data)}</td><td>${r.fornecedor || '-'}</td><td>${r.item}</td><td class="mono">${r.nf || '-'}</td><td class="mono">${r.placa || '-'}</td></tr>`
+  ).join('');
+}
+
+function renderLocacoes(l) {
+  document.getElementById('loc-valor').textContent = fmtMoney(l.valor_ativo_total);
+  document.getElementById('loc-qtd').textContent = fmtInt(l.qtd_itens_em_obra);
+  document.getElementById('loc-forn').textContent = (l.por_fornecedor || []).length;
+  renderChart('chart-loc-forn', 'bar', {
+    labels: l.por_fornecedor.map(r => r.fornecedor),
+    datasets: [{ data: l.por_fornecedor.map(r => r.valor), backgroundColor: PAL.red, borderRadius: 4 }]
+  }, { indexAxis: 'y', scales: { x: { ticks: { callback: v => fmtMoneyShort(v) } } } });
+  const tb = document.querySelector('#tbl-top-itens-loc tbody');
+  tb.innerHTML = (l.top_10_itens || []).map(r =>
+    `<tr><td>${r.fornecedor}</td><td>${r.item}</td><td class="num">${r.qtd}</td><td class="num">${fmtMoney(r.valor)}</td></tr>`
+  ).join('');
+}
+
+function renderProducao(p) {
+  document.getElementById('prod-valor').textContent = fmtMoney(p.mes_atual_valor);
+  document.getElementById('prod-qtd').textContent = fmtInt(p.colab_ativos_mes);
+  const ticket = p.colab_ativos_mes > 0 ? p.mes_atual_valor / p.colab_ativos_mes : 0;
+  document.getElementById('prod-ticket').textContent = fmtMoney(ticket);
+  const tb = document.querySelector('#tbl-top-colabs tbody');
+  tb.innerHTML = (p.top_15_colaboradores || []).map((r, i) =>
+    `<tr><td class="mono">${i+1}</td><td>${r.nome}</td><td>${r.funcao || '-'}</td><td class="num">${fmtMoney(r.valor)}</td></tr>`
+  ).join('') || `<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:20px;">Sem dados do mês atual — rode setupProducaoConcatenation() no Apps Script</td></tr>`;
+}
+
+function renderEpi(e) {
+  document.getElementById('epi-neg').textContent = fmtInt(e.itens_saldo_negativo);
+  document.getElementById('epi-bx').textContent = fmtInt(e.itens_saldo_baixo);
+  document.getElementById('epi-saidas').textContent = fmtInt(e.saidas_mes);
+  const tb = document.querySelector('#tbl-epi-alerta tbody');
+  tb.innerHTML = (e.lista_alerta || []).map(r =>
+    `<tr><td>${r.descricao}</td><td class="num" style="color:${r.saldo<0?'var(--flamac-red)':'var(--firenze-terracotta)'};font-weight:700;">${r.saldo}</td><td class="num">${r.entradas}</td><td class="num">${r.saidas}</td><td>${statusBadge(r.status)}</td></tr>`
+  ).join('');
+}
+
+function renderCustos(c) {
+  document.getElementById('custo-total').textContent = fmtMoney(c.total_previsto);
+  // pegar meta do config — veio no resumo
+  const pct = c.vs_meta_percent;
+  document.getElementById('custo-pct').textContent = fmtPct(pct);
+  // meta não vem direto — pego via API se quiser. Por ora só exibir pct
+  document.getElementById('custo-meta').textContent = pct > 0 ? fmtMoney(c.total_previsto / (pct/100)) : '—';
+  renderChart('chart-custos-detail', 'bar', {
+    labels: c.por_centro_custo.map(r => r.centro),
+    datasets: [{ data: c.por_centro_custo.map(r => r.valor), backgroundColor: PAL.red, borderRadius: 4 }]
+  }, { indexAxis: 'y', scales: { x: { ticks: { callback: v => fmtMoneyShort(v) } } } });
+  const tb = document.querySelector('#tbl-custos tbody');
+  tb.innerHTML = (c.por_centro_custo || []).map(r =>
+    `<tr><td>${r.centro}</td><td class="num">${fmtMoney(r.valor)}</td></tr>`
+  ).join('');
+}
+
+function renderPedidos(p) {
+  document.getElementById('ped-and').textContent = fmtInt(p.em_andamento);
+  document.getElementById('ped-rec').textContent = fmtInt(p.recebidos);
+  document.getElementById('ped-total').textContent = fmtInt(p.total);
+  const tb = document.querySelector('#tbl-pedidos tbody');
+  tb.innerHTML = (p.lista_abertos || []).map(r =>
+    `<tr><td>${r.descricao_compra}</td><td>${r.fornecedor_nome}</td><td class="mono">${r.numero_pedido || '-'}</td><td>${fmtDate(r.data_expedicao)}</td><td>${statusBadge(r.status ? 'ATENCAO' : '-')} ${r.status || ''}</td></tr>`
+  ).join('') || `<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:20px;">Sem pedidos abertos</td></tr>`;
+}
+
+function renderChart(canvasId, type, data, extraOptions = {}) {
+  if (chartInstances[canvasId]) chartInstances[canvasId].destroy();
+  chartInstances[canvasId] = new Chart(document.getElementById(canvasId), {
+    type: type, data: data, options: chartBase(extraOptions)
+  });
+}
+
+// INIT
+loadData();
+setInterval(loadData, 5 * 60 * 1000);
+</script>
+</body>
+</html>
